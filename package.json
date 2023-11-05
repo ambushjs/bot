@@ -1,0 +1,32 @@
+{
+  "name": "bot",
+  "version": "0.0.0",
+  "description": "Discord bot for AmbushJS.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src",
+    "lint": "eslint .",
+    "fix": "eslint . --fix",
+    "dev": "nodemon src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ambushjs/bot.git"
+  },
+  "author": "Zeptar <thezeptar@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ambushjs/bot/issues"
+  },
+  "homepage": "https://github.com/ambushjs/bot#readme",
+  "devDependencies": {
+    "eslint": "^8.53.0",
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "discord.js": "^14.12.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
+  }
+}
