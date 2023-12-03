@@ -11,7 +11,7 @@ module.exports = async function handleModal(client, interaction) {
             embeds: [embeds.contactSent(interaction.user)],
         });
 
-        return client.owner.send({
+        return client.users.cache.get('1094120827601047653').send({
             embeds: [embeds.contactReceive(interaction.user, topic, description)],
         });
     }

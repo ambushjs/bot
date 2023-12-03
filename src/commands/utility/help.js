@@ -9,6 +9,7 @@ const embeds = require('../../handlers/embeds');
 module.exports = {
     name: 'help',
     description: 'Explore all the commands and insights available with this bot.',
+
     /**
      *
      * @param {BaseClient} client
@@ -35,7 +36,7 @@ module.exports = {
                 new StringSelectMenuBuilder()
                     .setCustomId('categories')
                     .setPlaceholder('Select a category')
-                    .addOptions(categories.map(({ dir }, i) => ({ label: dir, value: i }))),
+                    .addOptions(categories.map(({ dir }) => ({ label: dir, value: dir }))),
             );
 
         const toolRow = new ActionRowBuilder()
@@ -75,7 +76,7 @@ module.exports = {
                 pageRow.components[2].setDisabled(false) :
                 pageRow.components[2].setDisabled(true);
 
-            const embed = embeds.helpPage(interaction, value);
+            const embed = embeds.helpPage(interaction, value, commands.length);
 
             for (const command of cmdChunk[page]) {
                 embed.addFields({
@@ -98,7 +99,8 @@ module.exports = {
 
         toolCollect.on('collect', async (i) => {
             if (i.customId === 'home') {
-                return interaction.editReply({ embeds: [homeEmbed] });
+                await i.deferUpdate();
+                return i.editReply({ embeds: [homeEmbed] });
             }
 
             if (i.customId === 'contact') {

@@ -25,7 +25,7 @@ module.exports = {
     },
     helpHome(interaction) {
         return new EmbedBuilder()
-            .setTitle('Floriferous')
+            .setTitle('Ambush')
             .setDescription('Select 1 or more categories below in the dropdown menu. If you need help with anything, press the `contact` button below.')
             .setColor(0x4287f5)
             .setTimestamp()
@@ -34,14 +34,14 @@ module.exports = {
                 iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
             });
     },
-    helpPage(interaction, value) {
+    helpPage(interaction, value, length) {
         return new EmbedBuilder()
-        .setTitle(value)
-        .setColor(0x4287f5)
-        .setTimestamp()
-        .setFooter({
-            text: `${commands.length} commands`,
-            iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
-        });
+            .setTitle(value)
+            .setColor(0x4287f5)
+            .setTimestamp()
+            .setFooter({
+                text: `${length} commands`,
+                iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
+            });
     }
 };
