@@ -95,7 +95,7 @@
         "no-undef-init": "off",
         "no-undef": "error",
         "no-undefined": "off",
-        "no-unused-vars": "warn",
+        "no-unused-vars": "off",
         "no-use-before-define": "error",
         "callback-return": [
             "warn",
@@ -104,7 +104,7 @@
                 "next"
             ]
         ],
-        "global-require": "error",
+        "global-require": "off",
         "handle-callback-err": "warn",
         "no-mixed-requires": "warn",
         "no-new-require": "error",

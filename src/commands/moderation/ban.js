@@ -1,3 +1,6 @@
+const { CommandInteraction } = require('discord.js');
+const BaseClient = require('../../handlers/client');
+
 module.exports = {
     name: 'ban',
     description: 'Ban a user.',
@@ -15,6 +18,13 @@ module.exports = {
             required: false,
         }
     ],
+
+    /**
+     *
+     * @param {BaseClient} client
+     * @param {CommandInteraction} interaction
+     * @returns {CommandInteraction} Returns an application interaction.
+     */
     run: async (client, interaction) => {
         await interaction.deferReply();
 
@@ -25,7 +35,7 @@ module.exports = {
         const { position: botRole } = interaction.guild.members.me.roles.highest;
 
         if (!interaction.member.permissions.has(4n)) {
-            return interaction.editReply("You don't have the permission to ban members.");
+            return interaction.editReply('You don\'t have the permission to ban members.');
         }
 
         if (targetRole >= requestRole || targetRole >= botRole || user.id === client.user.id) {
@@ -34,10 +44,10 @@ module.exports = {
 
         try {
             user.ban({ reason: interaction.options.get('reason')?.value });
-            interaction.editReply(`<@${user.id}> has been banned.`);
+            return interaction.editReply(`<@${user.id}> has been banned.`);
         } catch(error) {
-            interaction.editReply('Error occurred.');
             console.error(error);
+            return interaction.editReply('Error occurred.');
         }
     },
 };
