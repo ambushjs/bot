@@ -25,11 +25,11 @@ class BaseClient extends Client {
                 return;
             }
 
-            await command.run(this, interaction);
+            await command.run(interaction, this);
         }
 
         if (interaction.isModalSubmit()) {
-            await handleModal(this, interaction);
+            await handleModal(interaction, this);
         }
     }
 

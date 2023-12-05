@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ModalBuilder, StringSelectMenuBuilder, TextInputBuilder, CommandInteraction } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ModalBuilder, StringSelectMenuBuilder, TextInputBuilder, CommandInteraction } = require('discord.js');
 
 const { chunk } = require('ambush');
 const { readdirSync } = require('fs');
@@ -9,13 +9,12 @@ const embeds = require('../../handlers/embeds');
 module.exports = {
     name: 'help',
     description: 'Explore all the commands and insights available with this bot.',
-
     /**
      *
      * @param {BaseClient} client
      * @param {CommandInteraction} interaction
      */
-    run: async (client, interaction) => {
+    run: async (interaction, client) => {
         let page = 0;
         let value = 0;
 
@@ -29,7 +28,7 @@ module.exports = {
                     .map(({ name, description, id }) => ({ name, description, id })),
             }));
 
-        const homeEmbed = embeds.helpHome(interaction);
+        const homeEmbed = embeds.helpHome(interaction.user);
 
         const selectRow = new ActionRowBuilder()
             .addComponents(
@@ -76,7 +75,7 @@ module.exports = {
                 pageRow.components[2].setDisabled(false) :
                 pageRow.components[2].setDisabled(true);
 
-            const embed = embeds.helpPage(interaction, value, commands.length);
+            const embed = embeds.helpPage(interaction.user, value, commands.length);
 
             for (const command of cmdChunk[page]) {
                 embed.addFields({

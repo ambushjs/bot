@@ -163,13 +163,7 @@
             "warn",
             "unix"
         ],
-        "lines-around-comment": [
-            "warn",
-            {
-                "beforeBlockComment": true,
-                "allowBlockStart": true
-            }
-        ],
+        "lines-around-comment": "off",
         "max-nested-callbacks": [
             "warn",
             8

@@ -24,14 +24,13 @@ module.exports = {
             required: false,
         },
     ],
-
     /**
      *
      * @param {BaseClient} client
      * @param {CommandInteraction} interaction
      * @returns {CommandInteraction} Returns an application interaction.
      */
-    run: async (client, interaction) => {
+    run: async (interaction, client) => {
         await interaction.deferReply();
 
         const name = interaction.options.get('name').value;
