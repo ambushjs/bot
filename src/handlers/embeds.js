@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const ms = require('../../lib/pretty');
 
 module.exports = {
     contactSent(user) {
@@ -44,6 +45,36 @@ module.exports = {
                 iconURL: user.displayAvatarURL({ extension: 'png' }),
             });
     },
+    helpStats(client, user, stamp) {
+        return new EmbedBuilder()
+            .setTitle('Statistics')
+            .addFields(
+                {
+                    name: 'Realtime Ping',
+                    value: '```yaml' + `\nWebsocket Heartbeat: ${client.ws.ping}ms\nRoundtrip Latency: ${stamp}ms\n\`\`\``,
+                },
+                {
+                    name: 'Uptime',
+                    value: '```yaml\nStatus: Online\nUptime: ' + ms(client.uptime) + '```',
+                    inline: true,
+                },
+                {
+                    name: 'Owner',
+                    value: '```yaml\nDiscord: @thezeptar\nGithub: thezeptar```',
+                    inline: true,
+                },
+                {
+                    name: 'Bot Status',
+                    value: '```yaml' + `\n- Commands: ${client.commands.size.toString()} commands\n- Servers: ${client.guilds.cache.size} servers\n- Channels: ${client.channels.cache.size} channels\n- Users: ${client.users.cache.size} users\n` + '```',
+                }
+            )
+            .setColor(0x4b9cd3)
+            .setFooter({
+                text: user.username,
+                iconURL: user.displayAvatarURL({ extension: 'png' }),
+            })
+            .setTimestamp();
+    },
     compileMain: (user) => {
         return new EmbedBuilder()
             .setTitle('Compile Code')
@@ -55,7 +86,9 @@ module.exports = {
             })
             .setTimestamp();
     },
-    fail: new EmbedBuilder()
-        .setDescription('This interaction is not created and usable by you.')
-        .setColor(0xfa5f55),
+    fail: (msg) => {
+        return new EmbedBuilder()
+            .setDescription(msg)
+            .setColor(0xfa5f55);
+    },
 };

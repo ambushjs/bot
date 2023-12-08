@@ -19,19 +19,19 @@ module.exports = async function handleModal(interaction, client) {
         });
     }
 
-    if (interaction.customId === 'modal-compile') {
-        const input = interaction.fields.getTextInputValue('language-input').toLowerCase();
+    if (interaction.customId === 'compile') {
+        const input = interaction.fields.getTextInputValue('language').toLowerCase();
         const language = input.startsWith('node') ? 'javascript' : input;
-        const code = interaction.fields.getTextInputValue('code-input');
+        const code = interaction.fields.getTextInputValue('code');
 
         await interaction.deferUpdate();
 
         getList(language).then((languageVersions) => {
-            fromString({ code, compiler: languageVersions[0].name }).then(async (output) => {
+            fromString({ code, compiler: languageVersions[0].name }).then((output) => {
                 const { program_error, program_output } = output;
 
                 if (program_error) {
-                    await interaction.editReply({
+                    return interaction.editReply({
                         embeds: [
                             new EmbedBuilder()
                                 .setTitle('Compiling Error')
@@ -46,7 +46,7 @@ module.exports = async function handleModal(interaction, client) {
                         ],
                     });
                 } else {
-                    await interaction.editReply({
+                    return interaction.editReply({
                         embeds: [
                             new EmbedBuilder()
                                 .setTitle('Compiled Code')
@@ -62,7 +62,7 @@ module.exports = async function handleModal(interaction, client) {
                     });
                 }
             }).catch(async (error) => {
-                await interaction.followUp({
+                return interaction.followUp({
                     embeds: [
                         new EmbedBuilder()
                             .setDescription(`${error}. Try pressing the \`Insert Code\` button to try again.`)
@@ -72,7 +72,7 @@ module.exports = async function handleModal(interaction, client) {
                 });
             });
         }).catch(async (error) => {
-            await interaction.followUp({
+            return interaction.followUp({
                 embeds: [
                     new EmbedBuilder()
                         .setDescription(`${error} View all of the [available languages here](https://github.com/srz-zumix/wandbox-api#cli).\nIn addition, try not to use aliases. (\`py\` > \`python\`)`)

@@ -17,6 +17,7 @@ module.exports = {
     run: async (interaction, client) => {
         let page = 0;
         let value = 0;
+        let isTool = false;
 
         await interaction.deferReply();
 
@@ -49,12 +50,12 @@ module.exports = {
             .addComponents(
                 new ButtonBuilder().setCustomId('previous').setLabel('<').setStyle(1).setDisabled(true),
                 new ButtonBuilder().setCustomId('exit').setLabel('X').setStyle(4),
-                new ButtonBuilder().setCustomId('next').setLabel('>').setStyle(1),
+                new ButtonBuilder().setCustomId('next').setLabel('>').setStyle(1).setDisabled(true),
             );
 
         const reply = await interaction.editReply({
             embeds: [homeEmbed],
-            components: [selectRow, toolRow, pageRow],
+            components: [selectRow, toolRow],
         });
 
         function filter(i) {
@@ -84,6 +85,8 @@ module.exports = {
                 });
             }
 
+            isTool = true;
+
             return i.editReply({ embeds: [embed], components: [selectRow, toolRow, pageRow] });
         }
 
@@ -99,7 +102,10 @@ module.exports = {
         toolCollect.on('collect', async (i) => {
             if (i.customId === 'home') {
                 await i.deferUpdate();
-                return i.editReply({ embeds: [homeEmbed] });
+
+                isTool = false;
+
+                return i.editReply({ embeds: [homeEmbed], components: [selectRow, toolRow] });
             }
 
             if (i.customId === 'contact') {
@@ -126,6 +132,22 @@ module.exports = {
                         .setTitle('Contact developers')
                         .addComponents([topic, description]),
                 );
+            }
+
+            if (i.customId === 'statistics') {
+                await i.deferUpdate();
+
+                const record = Date.now();
+                await i.editReply({ content: 'Pinging...' });
+                const sent = Date.now();
+
+                isTool = false;
+
+                return i.editReply({
+                    content: '',
+                    embeds: [embeds.helpStats(client, interaction.user, sent - record)],
+                    components: [selectRow, toolRow]
+                });
             }
         });
 
@@ -155,7 +177,7 @@ module.exports = {
                 }
             });
 
-            await interaction.editReply({ components: [selectRow, toolRow, pageRow] });
+            await interaction.editReply({ components: [selectRow, toolRow, isTool ? pageRow : null] });
         });
     }
 };
